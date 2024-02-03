@@ -7,8 +7,8 @@
   </head>
   <script src="qr-scanner.umd.min.js"></script>
   <body>
-    <video></video>
-
+    <video width="400" height="400" style="display: none"></video>
+    <button id="read-code">Ler código</button>
     <script>
       const videoElem = document.getElementsByTagName("video").item(0);
       const qrScanner = new QrScanner(
@@ -16,7 +16,17 @@
         (result) => console.log("decoded qr code:", result),
         { returnDetailedScanResult: true }
       );
-      qrScanner.start();
+
+      var button = document.getElementById("read-code");
+      button.addEventListener("click", function () {
+        qrScanner.start();
+        videoElem.style.display = "block";
+        videoElem.style.opacity = "unset";
+        videoElem.style.maxWidth = "400";
+        videoElem.style.maxHeight = "400";
+        videoElem.style.height = "100%";
+        videoElem.style.width = "100%";
+      });
     </script>
   </body>
 </html>
