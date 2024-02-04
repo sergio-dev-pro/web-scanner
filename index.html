@@ -3,8 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.min.css"
+      integrity="sha256-taQFSDo4HiAKD/W+TXKADfUBjHmLcBswybMpmprJ5QM="
+      crossorigin="anonymous"
+    />
     <title>Document</title>
   </head>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.all.min.js"></script>
   <script src="qr-scanner.umd.min.js"></script>
   <body>
     <video width="400" height="400" style="display: none"></video>
@@ -13,7 +20,15 @@
       const videoElem = document.getElementsByTagName("video").item(0);
       const qrScanner = new QrScanner(
         videoElem,
-        (result) => console.log("decoded qr code:", result),
+        (result) => {
+          qrScanner.stop();
+          Swal.fire({
+            title: "Código",
+            text: result.data,
+            icon: "success",
+          });
+          console.log("decoded qr code:", result);
+        },
         { returnDetailedScanResult: true }
       );
 
@@ -22,10 +37,10 @@
         qrScanner.start();
         videoElem.style.display = "block";
         videoElem.style.opacity = "unset";
-        videoElem.style.maxWidth = "400";
-        videoElem.style.maxHeight = "400";
         videoElem.style.height = "100%";
         videoElem.style.width = "100%";
+        videoElem.style.maxWidth = "400px";
+        videoElem.style.maxHeight = "400px";
       });
     </script>
   </body>
