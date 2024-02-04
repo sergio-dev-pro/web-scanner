@@ -9,6 +9,29 @@
       integrity="sha256-taQFSDo4HiAKD/W+TXKADfUBjHmLcBswybMpmprJ5QM="
       crossorigin="anonymous"
     />
+    <style>
+      button {
+        width: 190px;
+        height: 48px;
+        border-radius: 8px;
+        border: none;
+        color: #dcdcdc;
+        background-color: black;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      video {
+        border-radius: 8px;
+        border: 2px solid black;
+        margin-bottom: 18px;
+      }
+
+      button:hover {
+        background-color: #696969;
+      }
+    </style>
     <title>Document</title>
   </head>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.all.min.js"></script>
@@ -22,12 +45,32 @@
         videoElem,
         (result) => {
           qrScanner.stop();
-          Swal.fire({
-            title: "Código",
-            text: result.data,
-            icon: "success",
-          });
-          console.log("decoded qr code:", result);
+          fetch(
+            `https://meetingpoint-api-old.credenciamentospr.com/v1/api/users/staff/${result.data}`
+          )
+            .then((res) => {
+              if (!res.ok) {
+                Swal.fire({
+                  title: "Código não econtrado",
+                  text: "",
+                  icon: "error",
+                });
+                videoElem.style.display = "none";
+                throw new Error(`Erro na solicitação: ${res.status}`);
+              }
+              return res.json();
+            })
+            .then((data) => {
+              Swal.fire({
+                title: data.name,
+                html: `Documento: ${data.document}; Função: ${data.role}; ${
+                  data?.sponsor ? `Patrocinador: ${data.sponsor}` : ""
+                }`,
+                icon: "success",
+              });
+              videoElem.style.display = "none";
+              console.log("decoded qr code:", data);
+            });
         },
         { returnDetailedScanResult: true }
       );
