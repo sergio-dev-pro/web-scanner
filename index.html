@@ -10,6 +10,15 @@
       crossorigin="anonymous"
     />
     <style>
+      body {
+        font-family: "Gill Sans Extrabold", Helvetica, sans-serif;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
       button {
         width: 190px;
         height: 48px;
@@ -31,12 +40,25 @@
       button:hover {
         background-color: #696969;
       }
+
+      h1 {
+        color: black;
+        font-size: 30px;
+        font-weight: 900;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 20px;
+        }
+      }
     </style>
     <title>Document</title>
   </head>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.all.min.js"></script>
   <script src="qr-scanner.umd.min.js"></script>
   <body>
+    <h1 class="mb-4">SPR - BUSCA POR PULSEIRA</h1>
     <video width="400" height="400" style="display: none"></video>
     <button id="read-code">Ler código</button>
     <script>
